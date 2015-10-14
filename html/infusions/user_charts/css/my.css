@@ -1,0 +1,73 @@
+#usercharts{
+    width: 750px;
+    margin: 0 auto;
+    color: #EAA022;
+    font-size: 15px;
+
+}
+
+.table {
+    width:100%;
+    border:1px solid #C0C0C0;
+    border-collapse:collapse;
+
+    /*padding:5px;*/
+}
+.table th {
+    border:1px solid #C0C0C0;
+    padding:5px;
+    background: #c3211b;
+    font-size: 16px;
+}
+.table td {
+    border:1px solid #C0C0C0;
+    text-align:center;
+    padding:5px;
+    font-size: 13px;
+}
+
+.table_panel {
+    width:100%;
+    border:1px solid #C0C0C0;
+    border-collapse:collapse;
+
+    /*padding:5px;*/
+}
+.table_panel th {
+    border:1px solid #C0C0C0;
+    padding:5px;
+    background: #c3211b;
+    font-size: 16px;
+}
+.table_panel td {
+    border:1px solid #C0C0C0;
+    text-align:center;
+    padding:5px;
+    font-size: 13px;
+}
+
+.table_img {
+    width: 100%;
+}
+/*input[type=range] {*/
+    /*-webkit-appearance: none;*/
+    /*width: 100%;*/
+    /*border-radius: 8px;*/
+    /*height: 7px;*/
+    /*border: 1px solid #bdc3c7;*/
+    /*background-color: #fff;*/
+/*}*/
+
+.text{
+    text-align: center;
+    color: #EAA022;
+    font-size: 25px;
+}
+
+#gruenerman{
+    height: 72px;
+}
+
+#cover{
+    height: 60px;
+}
