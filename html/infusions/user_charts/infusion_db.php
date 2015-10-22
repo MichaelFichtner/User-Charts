@@ -23,4 +23,7 @@ if (!defined("IN_FUSION")) {
 if (!defined("DB_CHARTS")) {
 	define("DB_CHARTS", DB_PREFIX."charts");
 }
+if (!defined("DB_NEUEINTRAG")){
+    define("DB_NEUEINTRAG", DB_PREFIX."neueintrag");
+}
 ?>

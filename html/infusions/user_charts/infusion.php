@@ -57,6 +57,13 @@ $inf_newtable[1] = DB_CHARTS."(
     PRIMARY KEY (chart_id)
 ) ENGINE=MyISAM";
 
+$inf_newtable[2] = DB_NEUEINTRAG."(
+    neu_id INT(100) UNSIGNED NOT NULL AUTO_INCREMENT,
+    neu_interpret VARCHAR(100) NOT NULL,
+    neu_song VARCHAR(100) NOT NULL,
+    PRIMARY KEY (neu_id)
+) ENGINE=MyISAM";
+
 
 $inf_adminpanel[1] = array(
 	"title" => $locale['charts_admin1'],
@@ -75,6 +82,7 @@ $inf_sitelink[1] = array(
 // Cleanup
 
 $inf_droptable[1] = DB_CHARTS;
+$inf_droptable[2] = DB_NEUEINTRAG;
 $inf_deldbrow[1] = DB_ADMIN." WHERE admin_rights='US'";
 
 

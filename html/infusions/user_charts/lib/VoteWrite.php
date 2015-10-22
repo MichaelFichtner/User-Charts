@@ -12,8 +12,8 @@
 $songId = $_POST['songId'];
 $points = $_POST['points'];
 $datenbank = $_POST['db'];
+$_update_vote = 'UPDATE '. $datenbank .' SET vote = vote + '.$points.' WHERE id = '.$songId.';';
 
-
-$res = 'UPDATE '. $datenbank .' SET vote = vote + '.$points.' WHERE id = '.$songId.';';
+$res = $_update_vote;
 
 var_dump($res);
