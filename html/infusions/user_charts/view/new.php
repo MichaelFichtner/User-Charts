@@ -6,6 +6,10 @@
  * Time: 00:53
  */
 
+require_once "../../../maincore.php";
+include INFUSIONS."user_charts/infusion_db.php";
+
+// TODO-MICHY Tabelle anpassen !!!
 
 $number = 1;
 $resultNew = dbquery("SELECT * FROM ".DB_NEUEINTRAG);
@@ -16,15 +20,20 @@ $rowsNew = dbrows($resultNew);
 /*echo "<div style='height: 100%; background-color: #e63636'><strong>Debug-Info</strong>";
 var_dump($rowsRaus);
 var_dump($rowsNew);
-var_dump($_POST);
 echo "</div>";*/
+
 echo "<div style='height: 100%'>";
 
 echo "<h2 style='text-align: center'>Neue Song einpflegen</h2>";
 echo "<p style='text-align: center'>Diese Woche sind <strong>".$rowsRaus."</strong> Einträge nötig</p></br>";
 
 
-echo "<form action=" . FUSION_SELF.$aidlink . " method='post'><table align='center' width='100%'>";
+echo "<form action=".$aidlink." method='post'><table align='center' class='GeneratedTable'><thead><tr>";
+echo "        <th> Number </th>";
+echo "        <th> Interpret </th>";
+echo "        <th> Song </th>";
+echo "        <th> Cover </th>";
+echo "        <th> Delete </th></tr></thead><tbody>";
     while($data = dbarray($resultNew)) {
         echo "<tr>
                 <td>".$number."</td>
@@ -34,15 +43,19 @@ echo "<form action=" . FUSION_SELF.$aidlink . " method='post'><table align='cent
               </tr>";$number++;
     }
 echo "   <tr><td colspan='4'><hr color='red'></td></tr>";
-if($rowsNew == $rowsRaus) {
-    echo "<tr><td>Fertig ....</td><td>Weiter </td></tr>";
+if($rowsNew >= $rowsRaus) {
+    echo "   <tr>
+            <td colspan='2'><input type=\"text\" name='interpret' value='Fertig' disabled></td>
+            <td colspan='1'><input type=\"text\" name='song' disabled></td>
+            <td><input id='neueintrag' type='submit' name='delete' value='Löschen'></td>
+        </tr>";
 }else{
     echo "   <tr>
             <td colspan='2'><input type=\"text\" name='interpret'></td>
             <td colspan='1'><input type=\"text\" name='song'></td>
-            <td><input id='neueintrag' type='submit' name='neueintrag'></td>
+            <td><input id='neueintrag' type='submit' name='neueintrag' value='Eintragen'></td>
         </tr>";
 }
-echo "</table></form>";
-echo $status;
+echo "</tbody></table></form>";
+//echo $status;
 echo "</div>";

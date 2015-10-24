@@ -116,3 +116,36 @@
     border-bottom-width: 0;
     margin: 0 0.5em 0 0;
 }
+
+#status {
+    background-color: #670518;
+    color: wheat;
+    text-align: center;
+    padding: 1px;
+    border-radius: 30px;
+    -webkit-border-radius: 30px;
+    -moz-border-radius: 30px;
+}
+
+/* Übersicht Tabelle */
+
+table.GeneratedTable {
+    width:100%;
+    background-color:#FFFFFF;
+    border-collapse:collapse;
+    border-width:1px;
+    border-color:#336600;
+    border-style:solid;
+    color:#000033;
+}
+
+table.GeneratedTable td, table.GeneratedTable th {
+    border-width:1px;
+    border-color:#336600;
+    border-style:solid;
+    padding:3px;
+}
+
+table.GeneratedTable thead {
+    background-color:#CCFF99;
+}

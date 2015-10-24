@@ -7,6 +7,7 @@
 | Filename: usercharts_admin.php
 | CVS Version: 1.00
 | Author: INSERT NAME HERE
+| pw Website : cd12A922112  <---- LÖSCHEN !!!!!!!!!!!!!
 +--------------------------------------------------------+
 | This program is released as free software under the
 | Affero GPL license. You can redistribute it and/or
@@ -20,6 +21,9 @@ require_once "../../maincore.php";
 require_once THEMES."templates/admin_header.php";
 
 include INFUSIONS."user_charts/infusion_db.php";
+require_once INFUSIONS."user_charts/lib/SearchCover.php";
+require_once INFUSIONS."user_charts/lib/StatusMessage.php";
+
 
 if (!checkrights("UC") || !defined("iAUTH") || $_GET['aid'] != iAUTH) { redirect("../index.php"); }
 
@@ -39,13 +43,13 @@ echo '<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness
 
 $uc_interpret = "";
 $uc_titel = "";
-
-$view = "start";
 $status = '';
 
+$status = new StatusMessage;
 
-if (array_key_exists('cover', $_POST)){
-    $view = "cover";
+
+if (array_key_exists('coverMake', $_POST)){
+    coverMake();
 }
 if (array_key_exists('new', $_POST)){
     $view = "new";
@@ -54,21 +58,11 @@ if (array_key_exists('auswertung', $_POST)){
     $view = "auswertung";
 }
 if (array_key_exists('neueintrag', $_POST)){
-    if(empty($_POST['interpret']) && empty($_POST['song'])) {
-        $status = "Bitte Felder vollständig aausfüllen";
-    }else{
-        $sql = "INSERT INTO " . DB_NEUEINTRAG . " (neu_interpret, neu_song) VALUES ('" . $_POST['interpret'] . "' , '" . $_POST['song'] . "')";
-        //var_dump($sql);  // SQL Statement überprüfen
-        $res = dbquery($sql);
-        if ($res) {
-            $status = "Datenbank schreiben";
-        } else {
-            $status = "Fehler beim DB schreiben";
-        }
-    }
+    databaseWrite($_POST, $status);
 }
-
-//include_once INFUSIONS."user_charts/view/".$view.".php";
+if (array_key_exists('delete', $_POST)){
+    $status->addMessages("LOESCHEN.. !!!");
+}
 
 ?>
     <script src="//code.jquery.com/jquery-1.10.2.js"></script>
@@ -83,43 +77,71 @@ if (array_key_exists('neueintrag', $_POST)){
                 var oldIndex = 0;
             }
             $('#tabs').tabs({
+                beforeLoad: function( event, ui ) {
+                    ui.jqXHR.fail(function() {
+                        ui.panel.html(
+                                "Couldn't load this tab. We'll try to fix this as soon as possible. " +
+                                "If this wouldn't be a demo." );
+                    })
+                },
                 active : oldIndex,
                 activate : function(event, ui){
                     var newIndex = ui.newTab.parent().children().index(ui.newTab);
-                    dataStore.setItem(index, newIndex)
-                },
+                    dataStore.setItem(index, newIndex);
+                    $('#status').remove();
+                }
             });
         });
     </script>
     <div id="tabs">
         <ul>
-            <li><a href="#tabs-1">Preloaded</a></li>
-            <li><a href="#tabs-2">Cover erstellen</a></li>
-            <li><a href="#tabs-3">Neue Song einpflegen</a></li>
-            <li><a href="#tabs-4">Wochen Auswertung</a></li>
+            <li><a href="view/start.php">Preloaded</a></li>
+            <li><a href="view/cover.php">Cover erstellen</a></li>
+            <li><a href="view/new.php">Neue Song einpflegen</a></li>
+            <li><a href="view/auswertung.php">Wochen Auswertung</a></li>
         </ul>
 
         <?php
-
-        echo "<div id='tabs-1'>";
-        include_once INFUSIONS."user_charts/view/start.php";
-        echo "</div>";
-
-        echo "<div id='tabs-2'>";
-        include_once INFUSIONS."user_charts/view/cover.php";
-        echo "</div>";
-
-        echo "<div id='tabs-3'>";
-        include_once INFUSIONS."user_charts/view/new.php";
-        echo "</div>";
-
-        echo "<div id='tabs-4'>";
-        include_once INFUSIONS."user_charts/view/auswertung.php";
-        echo "</div>";
-
+        $isError = $status->hasMesasage();
+        if($isError){
+            echo "<div id='status'>";
+            echo $status->printMessages();
+            echo "</div>";
+        }
         ?>
+
     </div>
 <?php
 closetable();
 require_once THEMES."templates/footer.php";
+
+function databaseWrite($data, StatusMessage $status){
+    if(empty($data['interpret']) && empty($data['song'])) {
+        $status->addMessages("Bitte Felder vollständig aausfüllen");
+    }else{
+        $sql = "INSERT INTO " . DB_NEUEINTRAG . " (neu_interpret, neu_song) VALUES ('" . $data['interpret'] . "' , '" . $data['song'] . "')";
+        //var_dump($sql);  // SQL Statement überprüfen
+        $res = dbquery($sql);
+        if ($res) {
+            $status->addMessages("Datenbank schreiben");
+        } else {
+            $status->addMessages("Fehler beim DB schreiben");
+        }
+    }
+    return $status;
+}
+
+function coverMake()
+{
+    echo "Cover erstellen jetzt";
+    $unseri = unserialize($_POST['daten']);
+    foreach ($unseri as $key) {
+        var_dump($key['id']);
+        var_dump($key['interpret']);
+        var_dump($key['song']);
+        $coverNew = new SearchCover($key['interpret'], $key['song'], $key['id']);
+        $coverNew->getTest();
+    }
+    var_dump(count($unseri));
+}
 ?>

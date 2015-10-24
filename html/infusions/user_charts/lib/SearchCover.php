@@ -6,6 +6,8 @@
  * Date: 13.10.15
  * Time: 22:43
  */
+
+require_once "/var/www/html/infusions/user_charts/lib/AmazonECS.class.php";
 class SearchCover
 {
 
@@ -22,7 +24,7 @@ class SearchCover
         $this->Song = $song;
         $this->id = $id;
     }
-
+// Todo-Michy Fehler abfangen !!!!
     public function getTest(){
         $res = $this->Interpret . " - " . $this->Song;
         $this->CoverSearch($res);
