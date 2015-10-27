@@ -9,7 +9,6 @@
 require_once "../../../maincore.php";
 include INFUSIONS."user_charts/infusion_db.php";
 
-// TODO-MICHY Tabelle anpassen !!!
 
 $number = 1;
 $resultNew = dbquery("SELECT * FROM ".DB_NEUEINTRAG);
@@ -24,7 +23,7 @@ echo "</div>";*/
 
 echo "<div style='height: 100%'>";
 
-echo "<h2 style='text-align: center'>Neue Song einpflegen</h2>";
+echo "<h4 style='text-align: center'>Neue Song einpflegen</h4>";
 echo "<p style='text-align: center'>Diese Woche sind <strong>".$rowsRaus."</strong> Einträge nötig</p></br>";
 
 
@@ -32,14 +31,14 @@ echo "<form action=".$aidlink." method='post'><table align='center' class='Gener
 echo "        <th> Number </th>";
 echo "        <th> Interpret </th>";
 echo "        <th> Song </th>";
-echo "        <th> Cover </th>";
+//echo "        <th> Cover </th>";
 echo "        <th> Delete </th></tr></thead><tbody>";
     while($data = dbarray($resultNew)) {
         echo "<tr>
                 <td>".$number."</td>
                 <td>".$data['neu_interpret']."</td>
                 <td>".$data['neu_song']."</td>
-                <td><input type='checkbox' name='delete' value='".$data['neu_id']."'></td>
+                <td><input type='checkbox' name='songid[]' value='".$data['neu_id']."'></td>
               </tr>";$number++;
     }
 echo "   <tr><td colspan='4'><hr color='red'></td></tr>";
@@ -47,7 +46,7 @@ if($rowsNew >= $rowsRaus) {
     echo "   <tr>
             <td colspan='2'><input type=\"text\" name='interpret' value='Fertig' disabled></td>
             <td colspan='1'><input type=\"text\" name='song' disabled></td>
-            <td><input id='neueintrag' type='submit' name='delete' value='Löschen'></td>
+            <td><input id='neueintrag' type='submit' name='delete' value='delete'></td>
         </tr>";
 }else{
     echo "   <tr>

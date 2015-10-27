@@ -64,6 +64,12 @@ $inf_newtable[2] = DB_NEUEINTRAG."(
     PRIMARY KEY (neu_id)
 ) ENGINE=MyISAM";
 
+$inf_newtable[3] = DB_TIMECHECK."(
+    time_id INT(100) UNSIGNED NOT NULL AUTO_INCREMENT,
+    time_user VARCHAR(100) NOT NULL,
+    time_time VARCHAR(100) NOT NULL,
+    PRIMARY KEY (time_id)
+) ENGINE=MyISAM";
 
 $inf_adminpanel[1] = array(
 	"title" => $locale['charts_admin1'],
@@ -83,6 +89,7 @@ $inf_sitelink[1] = array(
 
 $inf_droptable[1] = DB_CHARTS;
 $inf_droptable[2] = DB_NEUEINTRAG;
+$inf_droptable[3] = DB_TIMECHECK;
 $inf_deldbrow[1] = DB_ADMIN." WHERE admin_rights='US'";
 
 

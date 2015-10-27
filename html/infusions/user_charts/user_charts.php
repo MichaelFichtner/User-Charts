@@ -33,7 +33,7 @@ if (file_exists(INFUSIONS."user_charts/locale/".$settings['locale'].".php")) {
 	 * My Code Start
 	 */
 
-	echo "<h1 class='text'>UserCharts</h1>";
+	echo "<h1 class='text'>Hörer - Hitparade</h1>";
 
 require INFUSIONS.'user_charts/lib/AmazonECS.class.php';
 require INFUSIONS.'user_charts/lib/SearchCover.php';
@@ -64,12 +64,13 @@ $result = dbquery("SELECT s.*,(SELECT COUNT(chart_id) + 1 FROM " . DB_CHARTS . "
 			</thead>
 			<tbody>
 			<?php while($row = dbarray($result)){
-                $cover = new SearchCover($row["chart_interpret"],$row["chart_song"], $row["chart_id"]);
+                //$cover = new SearchCover($row["chart_interpret"],$row["chart_song"], $row["chart_id"]);
                 //$cover->getTest();
                 ?>
 				<tr>
 					<td>
 						<?php
+                        $tempplatz = 0;
 						if(!empty($tempplatz) && $tempplatz == $row["chart_platz"]){
 							echo $row["chart_platz"] + 1;
 						}else{
