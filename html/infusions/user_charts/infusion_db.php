@@ -21,9 +21,13 @@ if (!defined("IN_FUSION")) {
 }
 
 if (!defined("DB_CHARTS")) {
-	define("DB_CHARTS", DB_PREFIX."charts");
+	define("DB_CHARTS", DB_PREFIX."UC_charts");
 }
 if (!defined("DB_NEUEINTRAG")){
-    define("DB_NEUEINTRAG", DB_PREFIX."neueintrag");
+    define("DB_NEUEINTRAG", DB_PREFIX."UC_neueintrag");
+}
+
+if (!defined("DB_TIMECHECK")){
+    define("DB_TIMECHECK", DB_PREFIX."UC_timecheck");
 }
 ?>

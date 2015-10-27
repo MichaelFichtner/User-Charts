@@ -14,7 +14,7 @@ include INFUSIONS."user_charts/infusion_db.php";
 
 $number = 1;
 echo "<div style='height: 100%; color: black;'>";
-echo "<p> Übersicht </p>";
+echo "<h4 style='text-align: center'> Übersicht </h4>";
 
 $sql2 = "SELECT chart_interpret, chart_song, chart_vote FROM ". DB_CHARTS ." ORDER BY chart_vote DESC ";
 $result2 = dbquery($sql2);

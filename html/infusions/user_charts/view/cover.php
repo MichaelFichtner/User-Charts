@@ -11,13 +11,15 @@ include INFUSIONS."user_charts/infusion_db.php";
 // TODO-MICHY Fehler bei Cover suche beheben
 
 echo "<div style='height: 100%; color: black;'>";
-echo "<p> Cover erstellen </p>";
+echo "<h4 style='text-align: center'> Cover erstellen </h4>";
 
 $sqlcover = "SELECT chart_id, chart_interpret, chart_song, chart_cover FROM ". DB_CHARTS ." ";
 
 
 $resultcover = dbquery($sqlcover);
 $covertest = array();
+
+var_dump($_POST);
 
 echo "<table align='center' class='GeneratedTable'><thead><tr>";
 echo "        <th> Interpret </th>";

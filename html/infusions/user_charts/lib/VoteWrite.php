@@ -8,12 +8,16 @@
 
 //TODO-Michy annpassen noch Prototyp
 
+require_once "../../../maincore.php";
+include INFUSIONS."user_charts/infusion_db.php";
 
 $songId = $_POST['songId'];
 $points = $_POST['points'];
 $datenbank = $_POST['db'];
-$_update_vote = 'UPDATE '. $datenbank .' SET vote = vote + '.$points.' WHERE id = '.$songId.';';
+$_update_vote = 'UPDATE '. $datenbank .' SET chart_vote = chart_vote + '.$points.' WHERE chart_id = '.$songId.';';
 
 $res = $_update_vote;
 
-var_dump($res);
+$was = dbquery($res);
+
+echo $was;
