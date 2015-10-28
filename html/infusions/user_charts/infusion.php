@@ -90,8 +90,6 @@ $inf_sitelink[1] = array(
 $inf_droptable[1] = DB_CHARTS;
 $inf_droptable[2] = DB_NEUEINTRAG;
 $inf_droptable[3] = DB_TIMECHECK;
-$inf_deldbrow[1] = DB_ADMIN." WHERE admin_rights='US'";
-
-
+$inf_deldbrow[1] = DB_ADMIN." WHERE admin_rights='UC'";
 
 ?>

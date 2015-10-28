@@ -39,7 +39,7 @@ require INFUSIONS.'user_charts/lib/AmazonECS.class.php';
 require INFUSIONS.'user_charts/lib/SearchCover.php';
 
 $result = dbquery("SELECT s.*,(SELECT COUNT(chart_id) + 1 FROM " . DB_CHARTS . " WHERE chart_punkte > s.chart_punkte) AS chart_platz FROM " . DB_CHARTS . " s ORDER BY chart_punkte DESC;");
-
+$i = '1';
 ?>
 	<link rel="stylesheet" href="<?php echo INFUSIONS ?>user_charts/css/my.css">
 	<link rel="stylesheet" href="css/ionRangeSliderDemo/css/normalize.css">
@@ -64,8 +64,6 @@ $result = dbquery("SELECT s.*,(SELECT COUNT(chart_id) + 1 FROM " . DB_CHARTS . "
 			</thead>
 			<tbody>
 			<?php while($row = dbarray($result)){
-                //$cover = new SearchCover($row["chart_interpret"],$row["chart_song"], $row["chart_id"]);
-                //$cover->getTest();
                 ?>
 				<tr>
 					<td>

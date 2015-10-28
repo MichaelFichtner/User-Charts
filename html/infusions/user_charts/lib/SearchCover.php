@@ -7,7 +7,8 @@
  * Time: 22:43
  */
 
-require_once "/var/www/html/infusions/user_charts/lib/AmazonECS.class.php";
+require_once INFUSIONS."user_charts/lib/AmazonECS.class.php";
+
 
 error_reporting(E_ALL & ~E_NOTICE);
 

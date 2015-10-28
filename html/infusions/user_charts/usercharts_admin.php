@@ -54,9 +54,7 @@ if (array_key_exists('coverMake', $_POST)){
 }
 if (array_key_exists('auswertung', $_POST)){
     $analyseDaten = $_POST;
-    $test = analyze($analyseDaten, $status);
-    var_dump($test);
-
+    analyze($analyseDaten, $status);
 }
 if (array_key_exists('auswertung', $_POST)){
     $view = "auswertung";
@@ -87,7 +85,8 @@ if (array_key_exists('delete', $_POST)){
                         ui.panel.html(
                                 "Couldn't load this tab. We'll try to fix this as soon as possible. " +
                                 "If this wouldn't be a demo." );
-                    })
+                        });
+                    ui.ajaxSettings.data='test';
                 },
                 active : oldIndex,
                 activate : function(event, ui){
@@ -103,7 +102,7 @@ if (array_key_exists('delete', $_POST)){
             <li><a href="view/start.php">Preloaded</a></li>
             <li><a href="view/cover.php">Cover Check</a></li>
             <li><a href="view/new.php">Neue Song einpflegen</a></li>
-            <li><a href="view/auswertung.php">Wochen Auswertung</a></li>
+            <li><a id="datas" href="view/auswertung.php" data-eins="100" data-zwei="200">Wochen Auswertung</a></li>
         </ul>
 
         <?php
@@ -148,9 +147,7 @@ function coverMake(StatusMessage $status)
         $test = $coverNew->getTest();
         $status->addMessages($test);
     }
-    //var_dump(count($unseri));
 }
-
 function dbDelte($songids, StatusMessage $status){
     $anzahl = 1;
     if(empty($songids)) {
