@@ -39,6 +39,11 @@ require INFUSIONS.'user_charts/lib/AmazonECS.class.php';
 require INFUSIONS.'user_charts/lib/SearchCover.php';
 
 $result = dbquery("SELECT s.*,(SELECT COUNT(chart_id) + 1 FROM " . DB_CHARTS . " WHERE chart_punkte > s.chart_punkte) AS chart_platz FROM " . DB_CHARTS . " s ORDER BY chart_punkte DESC;");
+$resulttest = dbquery("SELECT s.*,(SELECT COUNT(chart_id) + 1 FROM PiF_ctII_UC_charts WHERE chart_punkte > s.chart_punkte) AS chart_platz, t.userid, t.votetime
+FROM PiF_ctII_UC_charts s
+JOIN  PiF_ctII_UC_timecheck t
+ON s.chart_id = t.songid
+ORDER BY t.userid DESC;");
 $i = '1';
 ?>
 	<link rel="stylesheet" href="<?php echo INFUSIONS ?>user_charts/css/my.css">
@@ -69,7 +74,7 @@ $i = '1';
 					<td>
 						<?php
                         $tempplatz = 0;
-						if(!empty($tempplatz) && $tempplatz == $row["chart_platz"]){
+						if(!empty($tempplatz) && $row["chart_platz"] == $tempplatz){
 							echo $row["chart_platz"] + 1;
 						}else{
 							echo $row["chart_platz"];
@@ -116,6 +121,7 @@ $i = '1';
                     </span>
                     <span id="ready_<?php echo $i ?>" style="display: none">
                         <img id="gruenerman" src="img/Maennchen_gruenerHaken.png">
+                        <p> <?php echo $row["userid"] . " -/- " . $row["votetime"] ?> </p>
                     </span>
 					</td>
 				</tr>
@@ -155,19 +161,20 @@ $i = '1';
                         var $DatenBank = <?php echo '"'. DB_CHARTS.'"' ?>;
                         var $songId = data.input.context.defaultValue;
                         var $points = data.from;
+                        var $user = "<?php echo $userdata['user_id'] ?>";
                         var $rangenr = data.slider.context.id;
                         var $rangenummer = $rangenr.slice(6, 8);
                         var $elementid = "#vote_";
                         var $elementready = "#ready_";
                         var $elemvote = $elementid.concat($rangenummer);
                         var $elemready = $elementready.concat($rangenummer);
-
-                        console.log($songId);
-                        console.log($points);
+                        console.log("Aktuelle Song ID : %o", $songId);
+                        console.log("Punkte : %o", $points);
+                        console.log("Aktuelle User: %o", $user);
 
                         $.ajax({
                             url: "lib/VoteWrite.php",
-                            data: {songId: $songId, points: $points, db: $DatenBank},
+                            data: {songId: $songId, points: $points, user:$user, db: $DatenBank},
                             datatype: "json",
                             type: "POST",
                             success: function (res) {
@@ -199,7 +206,13 @@ $i = '1';
         });
 	</script>
 <?php
-
+/* nur Pimpfusion*/
+pif_cache("online_users");
+var_dump($pif_cache['online_users']['members']);
+/* Userdaten vom eingelogten user */
+var_dump($userdata['user_name']." <-> ". $userdata['user_id']);
+/* unix time*/
+echo time();
 
 
 require_once THEMES."templates/footer.php";

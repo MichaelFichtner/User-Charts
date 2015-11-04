@@ -24,10 +24,12 @@ echo "</div>";*/
 echo "<div style='height: 100%'>";
 
 echo "<h4 style='text-align: center'>Neue Song einpflegen</h4>";
+
+
+
+echo "<form action=".$aidlink." method='post'>";
 echo "<p style='text-align: center'>Diese Woche sind <strong>".$rowsRaus."</strong> Einträge nötig</p></br>";
-
-
-echo "<form action=".$aidlink." method='post'><table align='center' class='GeneratedTable'><thead><tr>";
+echo "<table align='center' class='GeneratedTable'><thead><tr>";
 echo "        <th> Number </th>";
 echo "        <th> Interpret </th>";
 echo "        <th> Song </th>";
@@ -43,9 +45,8 @@ echo "        <th> Delete </th></tr></thead><tbody>";
     }
 echo "   <tr><td colspan='4'><hr color='red'></td></tr>";
 if($rowsNew >= $rowsRaus) {
-    echo "   <tr>
-            <td colspan='2'><input type=\"text\" name='interpret' value='Fertig' disabled></td>
-            <td colspan='1'><input type=\"text\" name='song' disabled></td>
+    echo "   <tr align='center'>
+            <td colspan='3'>Alle neuen Songs eingetragen ! Bitte nicht vergessen die Cover zuerstellen !</td>
             <td><input id='neueintrag' type='submit' name='delete' value='delete'></td>
         </tr>";
 }else{

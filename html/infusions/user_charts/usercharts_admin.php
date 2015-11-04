@@ -25,6 +25,12 @@ require_once INFUSIONS."user_charts/lib/SearchCover.php";
 require_once INFUSIONS."user_charts/lib/StatusMessage.php";
 require_once INFUSIONS."user_charts/lib/WeekFinally.php";
 
+session_start();
+if($_SESSION){
+    session_unset();
+}else{
+    var_dump($_SESSION);
+}
 
 if (!checkrights("UC") || !defined("iAUTH") || $_GET['aid'] != iAUTH) { redirect("../index.php"); }
 
@@ -37,27 +43,30 @@ if (file_exists(INFUSIONS."user_charts/locale/".$settings['locale'].".php")) {
 	include INFUSIONS."user_charts/locale/English.php";
 }
 
-opentable("User Charts - ADMIN");
 
+
+opentable("User Charts - ADMIN");
 echo '<link rel="stylesheet" href="' . INFUSIONS . 'user_charts/css/my.css">';
 echo '<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">';
 
 $uc_interpret = "";
 $uc_titel = "";
+$daten = '';
 $status = '';
 
 $status = new StatusMessage;
 
+$_SESSION['status'] = $status;
+
 
 if (array_key_exists('coverMake', $_POST)){
-    coverMake($status);
+    $res = coverMake($status);
+    var_dump($res);
 }
 if (array_key_exists('auswertung', $_POST)){
     $analyseDaten = $_POST;
-    analyze($analyseDaten, $status);
-}
-if (array_key_exists('auswertung', $_POST)){
-    $view = "auswertung";
+    $erg = json_encode(analyze($analyseDaten, $status));
+    $_SESSION['erg'] = $erg;
 }
 if (array_key_exists('neueintrag', $_POST)){
     databaseWrite($_POST, $status);
@@ -86,7 +95,6 @@ if (array_key_exists('delete', $_POST)){
                                 "Couldn't load this tab. We'll try to fix this as soon as possible. " +
                                 "If this wouldn't be a demo." );
                         });
-                    ui.ajaxSettings.data='test';
                 },
                 active : oldIndex,
                 activate : function(event, ui){
@@ -99,10 +107,10 @@ if (array_key_exists('delete', $_POST)){
     </script>
     <div id="tabs">
         <ul>
-            <li><a href="view/start.php">Preloaded</a></li>
+            <li><a href="view/start.php">Übersicht</a></li>
             <li><a href="view/cover.php">Cover Check</a></li>
             <li><a href="view/new.php">Neue Song einpflegen</a></li>
-            <li><a id="datas" href="view/auswertung.php" data-eins="100" data-zwei="200">Wochen Auswertung</a></li>
+            <li><a id="datas" href="view/auswertung.php?erg=<?php $status ; ?>">Wochen Auswertung</a></li>
         </ul>
 
         <?php
@@ -113,21 +121,20 @@ if (array_key_exists('delete', $_POST)){
             echo "</div>";
         }
         ?>
-
     </div>
 <?php
 closetable();
 require_once THEMES."templates/footer.php";
 
 function databaseWrite($data, StatusMessage $status){
-    if(empty($data['interpret']) && empty($data['song'])) {
+    if(empty($data['interpret']) || empty($data['song'])) {
         $status->addMessages("Bitte Felder vollständig ausfüllen");
     }else{
         $sql = "INSERT INTO " . DB_NEUEINTRAG . " (neu_interpret, neu_song) VALUES ('" . $data['interpret'] . "' , '" . $data['song'] . "')";
         //var_dump($sql);  // SQL Statement überprüfen
         $res = dbquery($sql);
         if ($res) {
-            $status->addMessages("Datenbank schreiben");
+            $status->addMessages("Song('s) gespeichert");
         } else {
             $status->addMessages("Fehler beim DB schreiben");
         }
@@ -144,9 +151,9 @@ function coverMake(StatusMessage $status)
         //var_dump($key['interpret']);
         //var_dump($key['song']);
         $coverNew = new SearchCover($key['interpret'], $key['song'], $key['id']);
-        $test = $coverNew->getTest();
-        $status->addMessages($test);
+        $res = $coverNew->getTest();
     }
+    return $res;
 }
 function dbDelte($songids, StatusMessage $status){
     $anzahl = 1;
@@ -158,7 +165,7 @@ function dbDelte($songids, StatusMessage $status){
            // var_dump($sql);  // SQL Statement überprüfen
             $res = dbquery($sql);
             if ($res) {
-                $temp  = " Es wurde " . $anzahl++ . " Daten gelöscht ";
+                $temp  = " Es wurde " . $anzahl++ . " Song('s) gelöscht ";
             } else {
                 $status->addMessages("Fehler beim DB schreiben");
             }
@@ -174,32 +181,35 @@ function analyze($daten, StatusMessage $status){
 
     $final = new WeekFinally();
 
-    if($ucv = $final->UpdateChartVorwoche()){
-        array_push($res, $ucv);
+    if($UpdateChartVorwoche = $final->UpdateChartVorwoche()){
+        $res[0][0] = $UpdateChartVorwoche;$res[0][1] = 'UpdateChartVorwoche';
     }else{
         $status->addMessages("Fehler beim Vorwochen Update");
     }
 
-    if($uvp = $final->UpdateChartPoints()){
-        array_push($res, $uvp);
+    if($UpdateChartPoints = $final->UpdateChartPoints()){
+        $res[1][0] = $UpdateChartPoints;$res[1][1] = 'UpdateChartPoints';
+
     }else{
         $status->addMessages("Fehler beim Update der Chart Points");
     }
 
-    if($dvp = $final->VotePointsDelete()){
-        array_push($res, $dvp);
+    if($VotePointsDelete = $final->VotePointsDelete()){
+        $res[2][0] = $VotePointsDelete;$res[2][1] = 'VotePointsDelete';
+
     }else{
         $status->addMessages("Fehler beim Vote Points löschen");
     }
 
-    if($nu = $final->NewUpdate()){
-        array_push($res, $nu);
+    if($newUpdate = $final->NewUpdate()){
+        $res[3][0] = $newUpdate;$res[3][1] = 'NewUpdate';
     }else{
         $status->addMessages("Fehler beim New Interpreten Update");
     }
 
-    if($wadd = $final->AddWeek()){
-        array_push($res, $wadd);
+    if($addWeek = $final->AddWeek()){
+        $res[4][0] = $addWeek;$res[4][1] = 'AddWeek';
+        ;
     }else{
         $status->addMessages("Fehler beim Woche 1+ ");
     }

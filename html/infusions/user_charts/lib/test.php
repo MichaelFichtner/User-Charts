@@ -42,6 +42,8 @@ class test
     {
         $this->songs[] = $song;
     }
-
+/* User online abfragen
+* SELECT * FROM PiF_ctII_users WHERE user_id = (SELECT online_user FROM  PiF_ctII_online);
+*/
 
 }

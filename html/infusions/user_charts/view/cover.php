@@ -35,7 +35,7 @@ echo "</tbody></table>";
 
 $seri = serialize($covertest); // Daten voerbereiten für POST methode
 echo "<form action=" .$aidlink . " method='post'>
-<input type='submit' value='Cover Erstellen' name='coverMake'>
+<input type='submit' value='Cover Erstellen' name='coverMake' style='width: 100%; height: 50px;border-color: darkred;margin: 20px 0 0 0;'>
 <input type='hidden' value='". $seri ."' name='daten'>
 </form>";
 echo "</div>";

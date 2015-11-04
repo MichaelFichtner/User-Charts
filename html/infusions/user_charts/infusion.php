@@ -65,10 +65,11 @@ $inf_newtable[2] = DB_NEUEINTRAG."(
 ) ENGINE=MyISAM";
 
 $inf_newtable[3] = DB_TIMECHECK."(
-    time_id INT(100) UNSIGNED NOT NULL AUTO_INCREMENT,
-    time_user VARCHAR(100) NOT NULL,
-    time_time VARCHAR(100) NOT NULL,
-    PRIMARY KEY (time_id)
+    id INT(100) UNSIGNED NOT NULL AUTO_INCREMENT,
+    userid INT(100) NOT NULL,
+    songid INT(100) NOT NULL,
+    votetime INT(100) NOT NULL,
+    PRIMARY KEY (id)
 ) ENGINE=MyISAM";
 
 $inf_adminpanel[1] = array(

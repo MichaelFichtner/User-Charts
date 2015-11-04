@@ -31,5 +31,5 @@ while ($vote = dbarray($result2)) {
     echo "    </tr>";
 }
 echo "</tbody></table>";
-echo "<a href='' ><button>Refresh</button></a>";
+echo "<a href='' ><button style='width: 100%; height: 50px;border-color: darkred;margin: 20px 0 0 0;'>Refresh</button></a>";
 echo "</div>";
