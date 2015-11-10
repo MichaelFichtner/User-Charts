@@ -25,6 +25,7 @@ vendor/
 /html/infusions/welcome_message_panel
 /html/infusions/ss_feeds_panel
 /html/infusions/mg_jquery_login_panel
+/html/phpmyadmin
 /html/infusions/pr_bewerbung
 /html/infusions/ts3_panel
 /html/infusions/latest_downloads_panel

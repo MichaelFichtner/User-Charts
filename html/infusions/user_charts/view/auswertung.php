@@ -18,7 +18,7 @@ $resultRaus = dbquery("SELECT * FROM ".DB_CHARTS." WHERE chart_woche = 8 ");
 $rowsRaus = dbrows($resultRaus);
 $rowsNew = dbrows($resultNew);
 $sonntag = 7;
-$nochTage = $sonntag - date('w');
+$nochTage = $sonntag - date('N');
 
 
 echo '<link rel="stylesheet" href="' . INFUSIONS . 'user_charts/css/my.css">';
@@ -27,13 +27,9 @@ echo "<div style='height: 100%; color: black;'>";
 echo "<h4 style='text-align: center;margin: 10px 0 40px 0;'> Wochen auswertung </h4>";
 date_default_timezone_set('Europe/Berlin');
 $result = json_decode($_SESSION['erg']);
-
-if (date('w') == 4 && date('H') == 17){
-    echo "heute ist Donnertag - 17 Uhr";
-}
-
+/* Wann Auswertung Aktiv ist */
+if (date('w') == 2 && date('H') >= 23){
 if($rowsNew >= $rowsRaus) {
-    if (date('w') == 5 && date('H') >= 00){
         if(!$result){
             echo "<form action=" .$aidlink . " method='post'>";
             echo "<input id='ausw' type='submit' name='auswertung' value='Auswerten JETZT !' style='width: 99%; height: 50px;border-color: darkred;'>";
@@ -56,10 +52,10 @@ if($rowsNew >= $rowsRaus) {
             echo "</table>";
     }
     }else{
-        echo "<h4 class='text'>Noch " . $nochTage . " Tage bis Sonntag 17 Uhr</h4>";
+        echo "<h4 class='text'>Bitte erst neue Songs einpflegen ! </h4>";
     }
 }else{
-    echo "<h4 class='text'>Bitte erst neue Songs einpflegen ! </h4>";
+    echo "<h4 class='text'>Noch " . $nochTage . " Tage bis Sonntag 17 Uhr</h4>";
 }
 
 echo "</div>";

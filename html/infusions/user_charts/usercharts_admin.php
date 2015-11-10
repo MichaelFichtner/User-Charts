@@ -6,7 +6,7 @@
 +--------------------------------------------------------+
 | Filename: usercharts_admin.php
 | CVS Version: 1.00
-| Author: INSERT NAME HERE
+| Author: Michael A. Fichtner
 +--------------------------------------------------------+
 | This program is released as free software under the
 | Affero GPL license. You can redistribute it and/or

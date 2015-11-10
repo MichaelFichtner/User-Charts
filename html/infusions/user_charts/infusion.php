@@ -6,7 +6,7 @@
 +--------------------------------------------------------+
 | Filename: infusion.php
 | CVS Version: 1.00
-| Author: INSERT NAME HERE
+| Author: Michael A. Fichtner
 +--------------------------------------------------------+
 | This program is released as free software under the
 | Affero GPL license. You can redistribute it and/or
@@ -65,7 +65,7 @@ $inf_newtable[2] = DB_NEUEINTRAG."(
 ) ENGINE=MyISAM";
 
 $inf_newtable[3] = DB_TIMECHECK."(
-    id INT(100) UNSIGNED NOT NULL AUTO_INCREMENT,
+    id INT(255) UNSIGNED NOT NULL AUTO_INCREMENT,
     userid INT(100) NOT NULL,
     songid INT(100) NOT NULL,
     votetime INT(100) NOT NULL,
