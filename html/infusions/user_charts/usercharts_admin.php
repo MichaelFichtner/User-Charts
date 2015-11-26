@@ -49,6 +49,9 @@ opentable("User Charts - ADMIN");
 echo '<link rel="stylesheet" href="' . INFUSIONS . 'user_charts/css/my.css">';
 echo '<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">';
 
+$resultRaus = dbquery("SELECT * FROM ".DB_CHARTS." WHERE chart_woche = 8 ");
+$rowsRaus = dbrows($resultRaus);
+
 $uc_interpret = "";
 $uc_titel = "";
 $daten = '';
@@ -57,6 +60,8 @@ $status = '';
 $status = new StatusMessage;
 
 $_SESSION['status'] = $status;
+$id = $_POST["songid"][0];
+echo $id;
 
 
 if (array_key_exists('coverMake', $_POST)){
@@ -69,6 +74,10 @@ if (array_key_exists('auswertung', $_POST)){
     $_SESSION['erg'] = $erg;
 }
 if (array_key_exists('neueintrag', $_POST)){
+    if(array_key_exists('songid', $_POST)){
+        $delSong = $_POST['songid'];
+        dbDelte($delSong, $status);
+    }
     databaseWrite($_POST, $status);
 }
 if (array_key_exists('delete', $_POST)){
@@ -111,6 +120,7 @@ if (array_key_exists('delete', $_POST)){
             <li><a href="view/cover.php">Cover Check</a></li>
             <li><a href="view/new.php">Neue Song einpflegen</a></li>
             <li><a id="datas" href="view/auswertung.php?erg=<?php $status ; ?>">Wochen Auswertung</a></li>
+            <li><a href="view/setting.php">Setting</a></li>
         </ul>
 
         <?php
@@ -127,6 +137,9 @@ closetable();
 require_once THEMES."templates/footer.php";
 
 function databaseWrite($data, StatusMessage $status){
+
+    if(array_key_exists('songid', $_POST)){return;} // wenn delete ausgeführt wird
+
     if(empty($data['interpret']) || empty($data['song'])) {
         $status->addMessages("Bitte Felder vollständig ausfüllen");
     }else{

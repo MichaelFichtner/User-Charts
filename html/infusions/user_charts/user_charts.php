@@ -35,6 +35,10 @@ if (file_exists(INFUSIONS . "user_charts/locale/" . $settings['locale'] . ".php"
 date_default_timezone_set('Europe/Berlin');
 $i = '1';
 
+$jetzt = getdate();
+$sperre = 30; //minuten
+$frei = 35; //minuten
+
 echo "<h1 class='text'>Hörer - Hitparade</h1>";
 
 require INFUSIONS . 'user_charts/lib/AmazonECS.class.php';
@@ -43,11 +47,15 @@ require INFUSIONS . 'user_charts/lib/WeekFinally.php';
 
 $result = dbquery("SELECT s.*,(SELECT COUNT(chart_id) + 1 FROM " . DB_CHARTS . " WHERE chart_punkte > s.chart_punkte) AS chart_platz FROM " . DB_CHARTS . " s ORDER BY chart_punkte DESC;");
 /* Wann die TimeCheck Tabelle gesamt auf Null gesetzt wird ... (09 FEHLER) */
-if(date(N) == 4 && date(H) == 10 && date(i) == 00){
-    $res = TimeCheckDelete();
-    //var_dump($res); // Überprüfung ob gelöscht wurde
+if (date(N) == 3 && date(H) == 21 && date(i) == 22) {
+    //$res = TimeCheckDelete();
+    var_dump($res); // Überprüfung ob gelöscht wurde
 }
-?>
+
+if ($jetzt["wday"] == 4 && $jetzt["minutes"] > $sperre && $jetzt["minutes"] < $frei) {
+    var_dump($jetzt);
+} else {
+    ?>
     <link rel="stylesheet" href="<?php echo INFUSIONS ?>user_charts/css/my.css">
     <link rel="stylesheet" href="css/ionRangeSliderDemo/css/normalize.css">
     <link rel="stylesheet" href="css/ionRangeSliderDemo/css/ion.rangeSlider.css">
@@ -122,12 +130,12 @@ if(date(N) == 4 && date(H) == 10 && date(i) == 00){
                             while ($voterows = dbarray($resultVoteTime)) {
                                 if ($row['chart_id'] == $voterows['songid']) {
                                     $timeSongId = $voterows['songid'];
-                                    $timestamp = round((time()-$voterows["votetime"]) / 3600); /* /3600 rechnet Std. aus*/
+                                    $timestamp = round((time() - $voterows["votetime"]) / 3600); /* /3600 rechnet Std. aus*/
                                     //echo round((time()-$voterows["votetime"]) / 60);
-                                    if($timestamp < 4){ /* Einstellung wieviel std. sperre */
+                                    if ($timestamp < 4) { /* Einstellung wieviel std. sperre */
                                         echo '<img id="gruenerman" src="img/Maennchen_gruenerHaken.png">';
-                                    }else{
-                                        $resultTimeDel = dbquery("DELETE FROM " .DB_TIMECHECK. " WHERE userid = " .$userdata['user_id']);
+                                    } else {
+                                        $resultTimeDel = dbquery("DELETE FROM " . DB_TIMECHECK . " WHERE userid = " . $userdata['user_id']);
                                         //var_dump($resultVoteTime);
                                         echo '<input id="songId" type="hidden" name="id" value="' . $row["chart_id"] . '">';
                                         echo '<span id="vote_' . $i . '">';
@@ -170,7 +178,9 @@ if(date(N) == 4 && date(H) == 10 && date(i) == 00){
             </tbody>
         </table>
     </div>
-
+    <?php
+}/// ????
+?>
 
     <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="js/ion.rangeSlider.min.js"></script>
@@ -247,8 +257,9 @@ if(date(N) == 4 && date(H) == 10 && date(i) == 00){
     </script>
 <?php
 
-function TimeCheckDelete(){
-    $resdel = "TRUNCATE TABLE ".DB_TIMECHECK." ";
+function TimeCheckDelete()
+{
+    $resdel = "TRUNCATE TABLE " . DB_TIMECHECK . " ";
 
     $resdel = dbquery($resdel);
 
